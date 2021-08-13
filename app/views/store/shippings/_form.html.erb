@@ -1,0 +1,58 @@
+<div class="columns">
+  <div class="column is-10 is-offset-1 is-centered">
+
+    <%= form_for [:store, shipping ]  do |f| %>
+    <% if @shipping.errors.any? %>
+      <div id="error_explanation">
+        <ul>
+        <% @shipping.errors.full_messages.each do |message| %>
+          <li class="is-danger" style="color:red"><%= message %></li>
+        <% end %>
+        </ul>
+      </div><br>
+    <% end %> 
+
+    <h2 class="subtitle is-5">Dados do Envio</h2>
+    <div class="field">
+      <div class="control">
+        <label>Informações de Envio</label>
+        <%= f.text_area :delivery_policy, :required => true, class: 'textarea', placeholder: 'Informe os preços e os detalhes do envio para seus clientes.' %>
+      </div>
+    </div>
+    <h2 class="subtitle is-5">Tipo de Envio</h2>
+    <div class="column">
+      <div class="field"> 
+        <label class="radio">
+          <%= f.check_box :daily_delivery %>
+          Enviar Hoje
+        </label>
+        <label class="radio">
+          <%= f.check_box :weekly_delivery %>
+          Entrega em dia(s) específico(s) da semana
+        </label>
+        <label class="radio">
+          <%= f.check_box :pick_up_at_the_store %>
+          Retirar na Loja
+        </label>
+        <label class="radio">
+          <%= f.check_box :reserve_delivery %>
+          Encomendar (combine o dia da entrega)
+        </label>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-3">
+        <div class="control">
+          <label>Preço mínimo para Frete Grátis (Opcional)</label>
+          <%= f.number_field :price_for_free_shipping, class: 'input' %>
+        </div>
+      </div>
+    </div>
+    <div class="field is-grouped">
+      <div class="control">
+        <%=  f.submit "Salvar", class: 'button is-danger is-outlined is-fullwidth is-uppercase' %>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

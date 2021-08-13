@@ -1,0 +1,52 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="container">
+    <div class="navbar-brand">
+      <%= link_to root_path, class:"navbar-item is-hidden-mobile is-hidden-tablet-only" do %>
+        <%= image_tag 'logo.png'%>
+      <% end  %>
+
+      <div class="navbar-item is-hidden-desktop is-hidden-widescreen" data-target="navbar">
+        <%= link_to empty_cart_client_carts_path, class:"navbar-item"  do %>
+          <span class="icon is-small">
+            <i class="fa fa-shopping-bag fa-lg"></i>
+          </span>
+          <span>
+            <sup style="padding-left: 3px;"><%= cart_count_over_one %></sup>
+          </span>
+        <% end %>
+      </div>
+
+      <%= link_to root_path, class:"navbar-item nav-center is-hidden-desktop is-hidden-widescreen", style: "flex: 1; justify-content: center;" do %>
+        <%= image_tag 'logo.png', style: 'width: 80px;' %>
+      <% end  %>
+      
+      <span class="navbar-burger burger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </div>
+    <div id="navbar" class="navbar-menu">
+      <div class="navbar-end">
+        <%= link_to 'Em sua Cidade', root_path, class: 'navbar-item is-size-6' %>        
+        <%= link_to empty_cart_client_carts_path, class: 'navbar-item is-hidden-tablet-only is-hidden-mobile' do %>
+          <span class="icon is-small">
+            <i class="fa fa-shopping-bag"></i>
+          </span>
+          <span>
+            <sup><%= cart_count_over_one %></sup>
+          </span>
+        <% end %>
+       
+        <%= link_to 'Loja', new_store_session_path, class: 'navbar-item is-size-6' %>
+        <%= link_to 'Suporte', suporte_index_path, class: 'navbar-item is-size-6' %>
+      </div>
+    </div>
+  </div>
+</nav>
+<style>
+  nav.navbar {
+    height: 6rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06) !important;
+  }
+</style>

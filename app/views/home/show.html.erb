@@ -1,0 +1,109 @@
+  <div class="column is-10 is-offset-1">
+    <div class="columns  is-vcentered  is-centered">
+      <div  class="column is-4" >
+        <div class="columns is-mobile is-vcentered" style="padding: 0px;margin-bottom: 0px;">
+          <div class="column is-two-fifths ">
+            <%= image_tag @store.profile.thumbnail_url(:default), class: 'product-image-mobile' %>
+          </div>
+          <div class="column">
+            <h1 class="f4"><%= @store.title%></h1>
+            <a href="https://api.whatsapp.com/send?phone=<%= @store.profile.phone_number_whatsapp %>">
+              <span class="icon">
+                <i class="fa fa-whatsapp"></i>
+              </span>
+            </a>
+            <% if @store.profile.link_to_facebook.present? %>
+              <a href="<%= @store.profile.link_to_facebook %>">
+              <span class="icon">
+                  <i class="fa fa-facebook"></i>
+                </span>
+              </a>
+            <% end %>
+            <% if @store.profile.link_to_instagram.present? %>
+              <a href="<%=@store.profile.link_to_instagram %>">
+              <span class="icon">
+                  <i class="fa fa-instagram"></i>
+                </span>
+              </a>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <%= search_form_for @q , url: home_path(@store), method: :get do |f| %>
+      <div class="columns">
+        <div class="column is-10">
+          <div class="control">
+            <%= f.search_field :title_or_subcategory_title_cont, class:'input', placeholder: 'Pesquisar produto ou categoria' %>
+          </div>
+        </div>
+        <div class="column is-1">
+          <div class="control">
+             <%=  f.submit "Filtrar", class: 'button is-danger is-outlined is-uppercase' %>
+          </div>
+        </div>
+      </div>
+      <% if @store.shipping.price_for_free_shipping.present? %> 
+        <p>Frete Grátis em compras acima de: <%= number_to_currency(@store.shipping.price_for_free_shipping) %></p>
+      <% end %>
+      <h2 class="f6">
+        <span class="icon is-small">
+          <i class="fa fa-map-marker"></i>
+        </span><%= @store.profile.address_text %>
+      </h2>
+    </div>
+  </div>
+<section class="columns is-fullheight">
+  <div class="column is-2 is-narrow-mobile is-fullheight">
+    <aside class="menu">
+      <p class="menu-label">
+        Filtros
+      </p>
+        <p>Preço Mínimo: <%= f.number_field :price_gteq, class: 'input'%></p>
+        <p>Preço Máximo: <%= f.number_field :price_lteq, class: 'input'%></p> 
+      <% end %>
+      <p class="menu-label">
+        Categorias
+      </p>
+      <div>
+        <% @store.store_categories_list.each do |store_category| %>
+          <ul class="menu-list">
+            <p><%= link_to store_category.title, home_path(@store, q: {store_category_title_cont: store_category.title}) %></p>
+          </ul>
+          <hr class="hr-category hr-color">
+        <% end %>
+        <% @store.subcategories_list.each do |subcategory| %>
+          <ul class="menu-list">
+            <p><%= link_to subcategory.title, home_path(@store, q: {subcategory_title_cont: subcategory.title}) %></p>
+          </ul>
+          <hr class="hr-category hr-color">
+        <% end %>
+      </div>
+    </aside>
+  </div>
+  <div class="column is-10">
+    <div class="product-index-grid pt4">
+      <% @products.each do |product| %>
+        <div class="product box" style="margin-bottom: 0rem;">
+          <div class="product-thumb">
+            <%= link_to image_tag(product.thumbnail_url(:default)), product_path(product) %>
+          </div>
+          <div class="pa3">
+            <h3 class="subtitle f5" style = "margin-bottom: 0px"><%= link_to truncate(product.title, length: 60), product_path(product) %></h3>
+            <%= link_to  product_path(product) do %>
+              <% if product.discount_select.present? %>
+                <p class="f4 has-text-left"><%= number_to_currency(product.discount_select.price_with_initial_discount(product)) %>
+                  <span>
+                    <sup style="text-decoration:line-through;">de: <%= number_to_currency(product.price) %></sup>
+                  </span>
+                </p>
+              <% else %>
+                <p class="f4 has-text-left"><%= number_to_currency(product.price) %></p>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <br><%= pagy_bulma_nav(@pagy).html_safe if @products.present? %>
+  </div>
+</section>

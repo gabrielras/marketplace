@@ -1,0 +1,29 @@
+<div class="column is-9 align-items-center is-mobile">
+  <div class="has-text-right">
+    <%= link_to 'X', client_order_product_path(order_product.id), method: :delete, class: 'button is-small' %>
+  </div>
+  <div class="columns align-items-center is-mobile">
+    <%= link_to product_path(order_product.product) do %>
+      <div class="column has-text-left">
+        <p><%= truncate(order_product.product.title, length: 60) %></p>
+        <% if order_product.discount.present? %>
+          <h6 class="subtitle is-5 has-text-left" ><%= number_to_currency(order_product.discount.price_with_initial_discount(order_product.product)) %>
+            <span>
+              <sup style="text-decoration:line-through;"><%= number_to_currency(order_product.product.price) %></sup>
+            </span>
+          </h6>
+        <% else %>
+        <h6 class="f4"><%= number_to_currency(order_product.current_total_price) %></h6>
+        <% end %>
+        <p>Quantidade: <%= order_product.quantity %></p>
+        <p><%= 'Cor: ' + order_product.color if order_product.color.present? %></p>
+        <p><%= 'Tamanho: ' + order_product.size if order_product.size.present? %></p>
+      </div>
+    <% end %>
+  </div>
+  <div class="has-text-right"> 
+    <%= link_to '+', add_one_client_order_product_path(order_product.id),  data: { turbolinks: false }, class: 'button is-small is-danger is-outlined' %>
+    <%= link_to '-', remove_one_client_order_product_path(order_product.id), data: { turbolinks: false }, class: 'button is-small is-danger is-outlined' %>
+  </div>
+  <hr class="hr-color" style="margin-bottom: 0px;"/>
+</div>

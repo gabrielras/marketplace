@@ -1,0 +1,38 @@
+<div class="columns is-multiline is-centered">
+   <div class="column is-7 has-text-white-ter">
+    <h1 class="subtitle has-text-centered">
+      Perfil
+    </h1>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "clients/shared/error_messages", resource: resource %>
+
+      <div class="field">
+        <label>Nome</label><br />
+        <%= f.text_field :name, class: "input" %>
+      </div>
+
+      <div class="field">
+        <label>Email</label><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+      </div>
+
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+      <% end %>
+
+      <div class="field">
+        <label>Nova Senha</label><i>(A senha não pode ficar vazia)</i><br />
+        <%= f.password_field :password, class: "input", autocomplete: "new-password" %>
+      </div>
+
+      <div class="field">
+        <label>Senha Atual</label><i>(Nós precisamos da sua senha atual para atualizar)</i><br />
+        <%= f.password_field :current_password, autocomplete: "current-password", class: "input" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Atualizar", class: "button is-rounded is-primary is-outlined is-fullwidth is-uppercase" %>
+      </div>
+    <% end %>
+  </div>
+</div>

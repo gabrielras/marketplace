@@ -1,0 +1,117 @@
+pt-BR:
+  activerecord:
+    models:
+      store:
+        one: Negócio
+        other: Negócios
+      profile:
+        one: Perfil 
+        other: Perfis
+      shipping:
+        one: Envio
+        other: Envios
+      product:
+        one: Produto
+        other: Produtos
+      discount:
+        one: Desconto
+        other: Descontos
+      payment:
+        one: Pagamento
+        other: Pagamentos
+      category:
+        one: Categoria
+        other: Categorias
+      subcategory:
+        one: Subcategoria
+        other: Subcategorias
+      cart:
+        one: carrinho 
+        other: carrinhos
+      order:
+        one: Pedido 
+        other: Pedidos
+      order_product:
+        one: Produto por Pedido
+        other: Produtos por Pedidos
+    attributes:
+      category:
+        title: Título
+      subtitle:
+        title: Título
+        store: Loja
+      store:
+        title: Título
+        name: Nome do responsável
+        surname: Sobrenome do responsável
+        cpf_number: CPF do responsável
+        status: Situação
+        password: Senha
+        current_password: Senha Atual
+      profile:
+        cep_number: CEP
+        state: Estado
+        city: Cidade
+        street: Rua
+        neighborhood: Bairro
+        number_residence: Numero da Residencia
+        complement: Complemento
+        thumbnail: Foto de Capa
+        credit_or_debit_card_payment_machine: Pagamento com Cartão de Crédito ou Débito
+        cash_payment: Pagamento em Dinheiro
+        billet_payment: Pagamento em Boleto
+        transfer_payment: Pagamento com Transferência Bancária
+        phone_number_whatsapp: Número de Whatsapp
+        link_to_facebook: Link do Facebook
+        link_to_instagram: Link do Instagram
+        store: Loja
+      shipping:
+        price_for_free_shipping: Preço Mínimo de Envio Gratuíto
+        delivery_policy: Informações de Envio
+        store: Loja
+        opening_time_hour: Horário de Abertura (horas)
+        opening_time_second:  Horário de Abertura (segundos)
+        closing_time_hour: Horário de Encerramento (horas)
+        closing_time_second: Horário de Encerramento (segundos)
+        daily_delivery: Enviar Hoje
+        weekly_delivery: Enviar em Dia Específico
+        reserve_delivery: Encomendar
+        daily_delivery: Enviar Hoje
+        pick_up_at_the_store: Retirar na Loja
+      product:
+        title: Título
+        price: Preço
+        description: Descrição
+        subcategory: Subcategoria
+        visibility: Visibilidade
+        status: Situação
+        quantity: Quantidade
+        images: Imagens
+        store: Loja
+        thumbnail: Foto de Capa
+      discount:
+        title: Título
+        end_time: Tempo de Encerramento
+        start_time: Tempo de Início
+        status: Situação
+        value: Valor
+        products: Produtos
+      payment:
+        status: Situação
+        payday: Dia do Pagamento
+        store: Loja
+      order:
+        comment: Comentário
+        cart: Carrinho
+        store: Loja
+        type_of_payments:
+          credit_or_debit_card_payment_machine: Maquininha de Cartão de Débito ou Crédito
+          cash_payment: Pagamento com Dinheiro
+          transfer_payment: Pagamento Por Transferência 
+          billet_payment: Pagamento com Boleto
+        type_of_shippings:
+          daily_delivery: Receber Hoje
+          weekly_delivery: Entrega Semanal
+          reserve_delivery: Reservar Entrega
+          pick_up_at_the_store: Retirar na Loja
+        

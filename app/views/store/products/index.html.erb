@@ -1,0 +1,40 @@
+<div class="columns">
+  <div class="column is-6">
+  <%=  search_form_for @q , url: store_products_path, method: :get do |f|%>
+    <div class="control">
+      <%= f.search_field :title_cont, class: 'input is-rounded', placeholder: 'Pesquisar por título' %>
+    </div>
+  </div> 
+  <div class="column is-2">
+    <%= button_tag class: "button is-info is-rounded" do %>
+      <i class="fa fa-search"></i>
+    <% end %>
+  <% end %>
+  </div>
+  <div class="column is-3">
+    <%= link_to "Criar Produto", new_store_product_path, class: 'button is-info is-outlined is-fullwidth is-uppercase' %>
+  </div>
+</div>
+<div class="columns is-multiline is-centered">
+  <div class="column is-10 is-offset-2">
+    <% if @products.blank? %>
+      <p>Cadastre um Produto e Venda :)</p>
+    <% else %>
+      <% @products.each do |product| %>
+        <div class="columns" style="padding: 0px;margin-bottom: 0px;">   
+          <div class="column is-5 is-offset-2">
+            <p class="f4"><%=  product.title %></p>
+            <p>Situação: <%= product.visibility == "true" ? "Visível" : "Invísivel" %></p>
+            <p>Ultima Atualização: <%= product.updated_at.strftime("%d/%m/%Y") %></p>
+            <p>Valor: <%= number_to_currency(product.price) %></p>
+            <%= link_to "Editar", edit_store_product_path(product), class: 'button is-info is-outlined is-fullwidth is-uppercase' %>
+          </div>
+          <hr class="hr-color" style="padding: 0px; margin-top: 0px;" />
+        </div>
+      <% end %>
+      <div class="column is-5 is-offset-2">
+        <%= pagy_bulma_nav(@pagy).html_safe %>
+      </div>
+    <% end %>
+  </div>
+</div>

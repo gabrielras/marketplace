@@ -1,0 +1,88 @@
+<%= search_form_for @q , url: root_path do |f| %>
+  <div class="columns ">
+    <div class="column is-8">
+      <div class="control">
+        <%= f.search_field :title_or_subcategory_title_cont, class:'input', placeholder: 'Pesquisar produtos' %>
+      </div>
+    </div>
+    <div class="column is-5">
+      <p>Localização do Estabelecimento</p>
+      <div class="field has-addons">
+        <p class="control">
+          <span>
+            <div class="select"><%= f.select :store_profile_city_cont, options_for_select([
+              [ 'Fortaleza' ],
+              [ 'Brasília' ],
+              [ 'Belo Horizonte' ],
+              [ 'Curitiba' ],
+              [ 'Recife' ],
+              [ 'Rio de Janeiro' ],
+              [ 'Porto Alegre' ],
+              [ 'São Paulo' ]
+            ], session[:city]) , class: 'input' %>
+            </div>
+          </span> 
+        </p>
+        <p class="control">
+          <%= f.search_field :store_profile_neighborhood_and_store_profile_street_cont, class:'input' %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <section class="columns is-fullheight">
+    <div class="column is-2 is-narrow-mobile is-fullheight">
+    <div class="tags are-medium">
+      <span class="tag is-info is-light filter-mobile-button">Filtros <sup class="pad-cart_count"><i class="fa fa-sort-desc" aria-hidden="true"></i></sup></span>
+      <span class="tag is-info is-light categories-mobile-button">Categorias  <sup class="pad-cart_count"><i class="fa fa-sort-desc" aria-hidden="true"></i></sup></span>
+      <%=  f.submit "Filtrar", class: 'button is-danger is-outlined is-uppercase is-small' %>
+    </div>
+      <div class="filter-mobile">
+        <ul class="menu-list is-3">
+          <li>Preço Mínimo</li>
+            <%= f.number_field :price_gteq, class: 'input', min: 1 %>
+          <li>Preço Máximo</li>
+            <%= f.number_field :price_lteq, class: 'input', min: 1 %>
+        </ul>
+      </div>
+      <div class="categories-mobile">
+        <% Category.all.each do |category| %>
+          <% if category.products_present?%>
+            <ul class="menu-list">
+              <%= link_to category.title, category_path(category) %>
+            </ul>
+            <hr class="hr-category hr-color">
+          <% end %>
+        <% end %>
+      </div>
+  </div>
+<% end %>
+
+<div class="column is-9">
+  <% @products.each do |product| %>
+    <div class="columns is-mobile" style="padding: 0px;margin-bottom: 0px;">
+      <div class="column is-two-fifths ">
+        <%= link_to  product_path(product) do %> 
+          <%= image_tag product.thumbnail_url(:default), class: 'product-image-mobile' %>
+        <% end %>
+      </div>
+      <div class="column">
+        <h3 class="f5"><%= link_to truncate(product.title, length: 35), product_path(product)%></h3>
+        <h5 class="f6">vendido por: <%= link_to  truncate(product.store.title, length: 20) , home_path(product.store) %></h5>
+        <%= link_to  product_path(product) do %>
+        <% if product.discount_select.present? %>
+            <h6 class="f4" ><%= number_to_currency(product.discount_select.price_with_initial_discount(product)) %>
+              <span>
+                <sup style="text-decoration:line-through;"><%= number_to_currency(product.price) %></sup>
+              </span>
+            </h6>
+          <% else %>
+            <h6 class="f4"><%= number_to_currency(product.price) %></h6>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <hr class="hr-color" style="padding: 0px; margin-top: 0px;" />
+  <% end %>
+</div>
+<%= pagy_bulma_nav(@pagy).html_safe %>
+</section>

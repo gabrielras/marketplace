@@ -1,0 +1,106 @@
+<%= search_form_for @q , url: root_path do |f| %>
+
+<section class="columns is-fullheight">
+  <div class="column is-2 is-narrow-mobile is-fullheight">
+    <aside class="menu">
+      <p class="menu-label">
+        Filtros
+      </p>
+      <ul class="menu-list is-3">
+        <li>Preço Mínimo</li>
+          <%= f.number_field :price_gteq, class: 'input', min: 1 %>
+        <li>Preço Máximo</li>
+          <%= f.number_field :price_lteq, class: 'input', min: 1 %>  
+      </ul>  
+      <p class="menu-label">
+        Subcategorias
+      </p>
+      <% @category.subcategories.all.each do |subcategory| %>
+        <% if subcategory.products_present?%>
+          <ul class="menu-list">
+            <%= link_to subcategory.title, category_path(@category, q: {subcategory_title_eq: subcategory.title, store_profile_city_cont: session[:city] })%>
+          </ul>
+        <% end %>
+      <% end %>
+    </aside>
+  </div>
+<div class="column is-10"> 
+  <div class="columns">
+    <div class="column is-4">
+      <div class="field has-addons">
+        <p class="control">
+          <span>
+            <div class="select"><%= f.select :store_profile_city_cont, options_for_select([
+              [ 'Rio Branco' ],
+              [ 'Maceió' ],
+              [ 'Macapá' ],
+              [ 'Manaus' ],
+              [ 'Salvador' ],
+              [ 'Fortaleza' ],
+              [ 'Brasília' ],
+              [ 'Vitória' ],
+              [ 'Goiânia' ],
+              [ 'São Luís' ],
+              [ 'Cuiabá' ],
+              [ 'Campo Grande' ],
+              [ 'Belo Horizonte' ],
+              [ 'Belém' ],
+              [ 'João Pessoa' ],
+              [ 'Curitiba' ],
+              [ 'Recife' ],
+              [ 'Teresina' ],
+              [ 'Rio de Janeiro' ],
+              [ 'Natal' ],
+              [ 'Porto Alegre' ],
+              [ 'Porto Velho' ],
+              [ 'Boa Vista' ],
+              [ 'Florianópolis' ],
+              [ 'São Paulo' ],
+              [ 'Aracaju' ],
+              [ 'Palmas' ]
+            ], session[:city]) , class: 'input' %>
+            </div>
+          </span> 
+        </p>
+        <p class="control">
+          <%= f.search_field :store_profile_neighborhood_and_store_profile_street_cont, class:'input', placeholder: 'Bairro ou Rua' %>
+        </p>
+      </div>
+    </div>
+    <div class="column is-4">
+      <%= f.search_field :title_or_subcategory_title_or_store_title_cont, class:'input', placeholder: 'Pesquisar Produtos' %>
+    </div>
+    <div class="column is-1">
+      <%=  f.submit "Filtrar", class: 'button is-danger is-outlined is-uppercase' %>
+    </div>
+  </div>
+<% end %>
+<br>
+  <div class="product-index-grid">
+    <% @products.each do |product| %>
+      <div class="product box" style="margin-bottom: 0rem;">
+        <div class="product-thumb">
+          <%= link_to image_tag(product.thumbnail_url(:default)), product_path(product) %>
+        </div>
+        <div class="pa2">
+          <h3 class="subtitle f5" style = "margin-bottom: 0px"><%= link_to truncate(product.title, length: 60), product_path(product) %></h3>
+          <%= link_to  product_path(product) do %>
+            <% if product.discount_select.present? %>
+              <p class="f4 has-text-left"><%= number_to_currency(product.discount_select.price_with_initial_discount(product)) %>
+                <span>
+                  <sup style="text-decoration:line-through;">de: <%= number_to_currency(product.price) %></sup>
+                </span>
+              </p>
+              <span class="tag is-danger">desconto: <%= product.discount_select.value %>%</span><br>
+            <% else %>
+              <p class="f4 has-text-left"><%= number_to_currency(product.price) %></p>
+            <% end %>
+          <% end %>
+          <p class="has-text-gray fg pt1">vendido por: <%= link_to truncate(product.store.title, length: 30), home_path(product.store) %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <br><% if @products.count > 15 %><%= pagy_bulma_nav(@pagy).html_safe %><% end %>
+</div>
+</section>

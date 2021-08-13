@@ -1,0 +1,104 @@
+<% set_meta_tags og: {
+  title:    @product.title,
+  description: @product.description,
+  type:     'produto',
+  url:      product_path(@product),
+  image:    @product.thumbnail_url(:default),
+} %>
+<section class="section container product-show">
+  <div class="columns">
+    <div class="column is-6">
+      <div class="pad-slideshow">
+        <div class="columns">
+          <div class="slideshow-container">
+            <div class="mySlides">
+              <%= image_tag @product.thumbnail_url(:default), class: 'product-slideshow', style: 'height: 250px; weight: 250px;' %>
+            </div>
+            <% @product.images.each do |image| %>
+              <div class="mySlides">
+                <%= image_tag image.url, class: 'product-slideshow', style: 'height: 250px; weight: 250px;'%>
+              </div>
+            <% end %>
+          </div>
+          <br>
+        </div>
+        <% if @product.images.present? %>
+        <div class="center-slider">
+          <a class="prev-slider">Anterior &#10094;</a>
+          <a class="next-slider">Próximo &#10095;</a>
+        </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="column is-6">
+      <div class="box pa4">
+        <h4 class="subtitle is-5 has-text-left" style="margin-bottom: 0px;"><%= @product.title %></h4><br>
+        <% if @product.discount_select %>
+          <h6 class="subtitle is-5 has-text-left" style="margin-bottom: 0px;" ><%= number_to_currency(@product.discount_select.price_with_initial_discount(@product)) %>
+            <span>
+              <sup style="text-decoration:line-through;"><%= number_to_currency(@product.price) %></sup>
+            </span>
+          </h6> 
+          <p class="help">desconto válido até: <%= @product.discount_select.end_time.strftime("%d/%m/%Y, %H:%M h") %></p>
+  
+        <% else %>
+          <h6 class="subtitle is-5 has-text-left" style="margin-bottom: 0px;"><%= number_to_currency(@product.price) %></h6>
+        <% end %>
+        <p class="has-text-left">vendido por: <%= link_to @product.store.title , home_path(@product.store) %></p>
+        <br>
+        <% if current_store.blank? %>
+          <%= form_for :product_select, url: client_order_products_path, method: :post do |f| %>
+            <% if @type_products.present? %>
+              <div class="columns is-mobile">
+                <div class="column is-10">
+                  <div class="select">
+                    <%= f.select :type_product, @type_products %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            <%= f.hidden_field :product_id, value: @product.id %>
+            <%= f.submit 'Adicionar Produto', class: 'button is-info is-uppercase is-outlined add-to-order' %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="column is-6">
+    <div class="content pa3 bg-white border-radius-3">
+      <h4 class="subtitle is-4">Descrição</h4>
+      <p stytle="text-align: justify;"><%= @product.description.gsub(/\n/, '<br/>').html_safe  %></p>
+      <% if @product.shipping.present? %>
+        <h4 class="is-4">Informações do Frete</h4>
+        <p><%= @product.shipping.delivery_policy.gsub(/\n/, '<br/>' ).html_safe  %></p>
+      <% end %>
+      <% if @recommendations.present? %>
+        <h5 class="subtitle is-5">Produtos Relacionados</h5>
+      <% end %>
+    </div>
+  </div>
+  <div class="product-index-grid">
+    <% @recommendations.each do |recommendation| %>
+      <div class="product box" style="margin-bottom: 0rem;">
+        <div class="product-thumb">
+          <%= link_to image_tag(recommendation.thumbnail_url(:default)), product_path(recommendation) %>
+        </div>     
+        <div class="pa3">
+          <h3 class="subtitle" style = "margin-bottom: 0px"><%= link_to truncate(recommendation.title, length: 50), product_path(recommendation) %></h3>
+          <%= link_to  product_path(recommendation) do %>
+            <% if recommendation.discount_select.present? %>
+              <p class="f4 has-text-left"><%= number_to_currency(recommendation.discount_select.price_with_initial_discount(recommendation)) %>
+                <span>
+                  <sup style="text-decoration:line-through;"><%= number_to_currency(recommendation.price) %></sup>
+                </span>
+              </p>
+            <% else %>
+              <p class="f4 has-text-left"><%= number_to_currency(recommendation.price) %></p>
+            <% end %>
+          <% end %>
+          <p class="has-text-gray fg pt1">vendido por: <%= link_to truncate(recommendation.store.title, length: 30) , home_path(recommendation.store_id) %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</section>

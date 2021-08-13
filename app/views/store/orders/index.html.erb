@@ -1,0 +1,49 @@
+<div class="columns is-mobile">
+  <div class="column is-8">
+  <%= search_form_for @q , url: store_orders_path, method: :get do |f|%>
+    <div class="control">
+      <%= f.search_field :cart_client_name_cont, class: 'input is-rounded', placeholder: 'Pesquisar' %>
+    </div>
+  </div> 
+  <div class="column is-2">
+    <%= button_tag class: "button is-primary is-rounded" do %>
+      <i class="fa fa-search"></i>
+    <% end %>
+  <% end %>
+  </div>
+</div>
+<div class="columns is-multiline is-centered">
+  <div class="column is-10 has-text-white-ter">
+    <% if @orders.blank? %>
+      <p>Você ainda não possuí nenhum pedido :)</p>
+    <% else %>
+    <div style="overflow-x:auto;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Situação</th>
+            <th>Número do Pedido</th>
+            <th>Cliente</th>
+            <th>Data de Solicitação do Pedido</th>
+            <th>Mostrar</th>
+          </tr>
+        </thead> 
+        <tbody>
+          <% @orders.each do |order| %>
+            <tr>
+              <td><%= translate_order_status(order.status) %></td>
+              <td><%= order.transaction_id %></td>
+              <td><%= order.cart.client.name %></td>
+              <td><%= order.created_at.strftime("%d/%m/%Y, %H:%M h") %></td>
+              <td>
+                <%= link_to "Mostrar", store_order_path(order), class: 'button is-primary is-outlined is-fullwidth is-uppercase' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= pagy_bulma_nav(@pagy).html_safe %>
+    <% end %>
+  </div>
+</div>

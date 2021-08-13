@@ -1,0 +1,93 @@
+<div class="columns">
+  <div class="column is-6 ">
+    <div class="tile is-ancestor">
+      <div class="tile is-vertical">
+        <div class="tile">
+          <div class="tile is-parent is-vertical">
+            <article class="tile is-child notification is-primary">
+              <p class="subtitle">Items do Carrinho</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box bg-white pa4 border-radius-6">
+      <div class="field">
+        <% @order.cart.order_products.each do |order_product| %>
+          Produto: <%= order_product.product.title %><br>
+          Valor Unidade: <%= order_product.price_paid %> R$<br>
+          Quantidade: <%= order_product.quantity %><br>
+          <hr>
+        <% end %>
+      </div>
+    </div>
+  </div> 
+  <div class="column is-6 ">
+    <div class="tile is-ancestor">
+      <div class="tile is-vertical">
+        <div class="tile">
+          <div class="tile is-parent is-vertical">
+            <article class="tile is-child notification is-primary">
+              <p class="subtitle">Informações adicionais</p>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box bg-white pa4 border-radius-6">
+      <div class="field-body">
+        <p> Cliente: <%=  @order.cart.client.name %></p>
+      </div>
+      <div class="field-body">
+        <p> Celular: <%=  @order.phone_number %></p>
+      </div>
+      <div class="field">
+        <% if @order.status == 'paid' %>
+          <div class="field">
+            <p> Loja: <%= @order.store.title %></p>
+            <p> Valor total: <%= @order.cart.total_price_paid %> R$ </p>
+          </div>
+        <% end %>
+      </div>
+      <div class="field-body">
+        <p> Situação: <%=  translate_order_status(@order.status) %></p>
+      </div>
+      <div class="field-body">
+        <p> Número do Pedido: <%=  @order.transaction_id %></p>
+      </div>
+      <div class="field-body">
+        <p>Informações adicionais: 
+        <% if @order.comment.present? %>
+          <%= @order.comment %>
+        <% else %>
+          Não informado.
+        <% end %>
+        </p>
+      </div>
+      <div class="field-body">
+        <p></p>
+      </div>
+      <div class="field">
+        <p>Endereço: <%= @order.cart.address_client.state %>,
+        <%= @order.cart.address_client.city %>,
+        <%= @order.cart.address_client.street %>,
+        <%= @order.cart.address_client.neighborhood %>,
+        <%= @order.cart.address_client.number_residence %> n°</p>
+      </div>
+      <% if @order.status == 'requested' %>
+         <p> Deseja Recusar o Pedido? </p>
+        <%= form_for :send_reason_refused, url: send_reason_refused_store_order_path, method: :get do |f| %>
+          <div class="field">
+            <div class="control">
+              <%= label :reason_refused, 'Motivo da Recusa:' %>
+              <%= f.text_area :reason_refused, :required => true, class: 'textarea is-primary' %>
+            </div>
+          </div>
+          <div class="actions">
+            <%= f.submit "Enviar", class: "button is-primary is-rounded is-outlined is-fullwidth is-uppercase" %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

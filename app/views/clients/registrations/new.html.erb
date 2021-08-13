@@ -1,0 +1,35 @@
+<div class="columns is-multiline is-centered">
+  <div class="column is-7 has-text-white-ter">
+    <h2 class="subtitle has-text-centered">
+      Cadastro do Cliente  
+    </h2>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    <div class="field">
+      <label>Nome</label><br />
+      <%= f.text_field :name, autofocus: true, class: "input" %>
+    </div>
+    
+    <div class="field">
+      <label>Email</label><br />
+      <%= f.email_field :email, autocomplete: "email", class: "input" %>
+    </div>
+
+    <div class="field">
+       <label>Senha</label>
+      <% if @minimum_password_length %>
+      <em>(mínimo de <%= @minimum_password_length %> caracteres.)</em>
+      <% end %><br />
+      <%= f.password_field :password, autocomplete: "new-password", class: "input" %>
+    </div>
+
+    <div class="actions">
+        <%= f.submit "Cadastrar", class: "button is-rounded is-primary is-outlined is-fullwidth is-uppercase" %>
+      </div>
+  <% end %>
+  </div>
+
+  <div class="column is-7 has-text-centered">
+    <%= render "clients/shared/links" %>
+  </div>
+</div>

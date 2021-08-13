@@ -1,0 +1,109 @@
+<div class="columns is-mobile is-vcentered" style="padding: 0px;margin-bottom: 0px;">
+  <div class="column is-two-fifths ">
+    <%= image_tag @store.profile.thumbnail_url(:default), class: 'product-image-mobile' %>
+  </div>
+  <div class="column">
+    <h1 class="f4"><%= @store.title%></h1>
+    <a href="https://api.whatsapp.com/send?phone=<%= @store.profile.phone_number_whatsapp %>">
+    <span class="icon">
+        <i class="fa fa-whatsapp"></i>
+      </span>
+    </a>
+    <% if @store.profile.link_to_facebook.present? %>
+      <a href="<%= @store.profile.link_to_facebook %>">
+      <span class="icon">
+          <i class="fa fa-facebook"></i>
+        </span>
+      </a>
+    <% end %>
+    <% if @store.profile.link_to_instagram.present? %>
+      <a href="<%=@store.profile.link_to_instagram %>">
+      <span class="icon">
+          <i class="fa fa-instagram"></i>
+        </span>
+      </a>
+    <% end %>
+  </div>
+</div>
+<br>
+<div class="columns is-centered is-vcentered">
+  <div class="column">
+    <h2 class="f6">
+      Localização:
+      <span class="icon is-small">
+        <i class="fa fa-map-marker"></i>
+      </span><%= @store.profile.address_text %>
+    </h2><br>
+    <% if @store.shipping.price_for_free_shipping.present? %> 
+      <p>Frete Grátis em compras acima de: <br> <%= number_to_currency(@store.shipping.price_for_free_shipping) %></p>
+    <% end %>
+  </div>
+</div>
+<section class="columns is-fullheight">
+<%= search_form_for @q , url: home_path(@store), method: :get do |f| %>
+  <div class="column">
+    <div class="control">
+      <%= f.search_field :title_or_subcategory_title_cont, class:'input', placeholder: 'Pesquisar produtos' %>
+    </div>
+  </div>
+  <div class="column is-narrow-mobile is-fullheight">
+    <div class="tags are-medium">
+      <span class="tag is-info is-light filter-mobile-button">Filtros<sup class="pad-cart_count"><i class="fa fa-sort-desc" aria-hidden="true"></i></sup></span>
+      <span class="tag is-info is-light categories-mobile-button">Categorias  <sup class="pad-cart_count"><i class="fa fa-sort-desc" aria-hidden="true"></i></sup></span>
+      <%=  f.submit "Filtrar", class: 'button is-danger is-outlined is-uppercase is-small' %>
+    </div>
+    <div class="filter-mobile">
+      <ul class="menu-list is-3">
+        <li>Preço Mínimo</li>
+          <%= f.number_field :price_gteq, class: 'input', min: 1 %>
+        <li>Preço Máximo</li>
+          <%= f.number_field :price_lteq, class: 'input', min: 1 %>
+      </ul>
+    </div>
+    <div class="categories-mobile">
+      <% @store.store_categories_list.each do |store_category| %>
+          <ul class="menu-list">
+            <p><%= link_to store_category.title, home_path(@store, q: {store_category_title_cont: store_category.title}) %></p>
+          </ul>
+          <hr class="hr-category hr-color">
+        <% end %>
+      <% @store.subcategories_list.each do |subcategory| %>
+        <ul class="menu-list">
+          <p><%= link_to subcategory.title, home_path(@store, q: {subcategory_title_cont: subcategory.title}) %></p>
+        </ul>
+        <hr class="hr-category hr-color">
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<div class="column is-9">
+  <ol class="items_container">
+    <% @products.each do |product| %>
+      <li class="promotion-item">
+        <div class="columns" style="padding: 3px;margin-bottom: 0px;">
+          <div class="column is-two-fifths ">
+            <%= link_to  product_path(product) do %> 
+              <%= image_tag product.thumbnail_url(:default), class: 'product-image-mobile' %>
+            <% end %>
+          </div>
+          <div class="column pa3">
+            <h3><%= link_to truncate(product.title, length: 35), product_path(product), style:' text-align: justify;'%></h3>
+            <%= link_to  product_path(product) do %>
+            <% if product.discount_select.present? %>
+                <h6 class="f5" ><%= number_to_currency(product.discount_select.price_with_initial_discount(product)) %>
+                  <span>
+                    <sup style="text-decoration:line-through;"><%= number_to_currency(product.price) %></sup>
+                  </span>
+                </h6>
+              <% else %>
+                <h6 class="f5"><%= number_to_currency(product.price) %></h6>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+</div>
+<%= pagy_bulma_nav(@pagy).html_safe %>
+</section>

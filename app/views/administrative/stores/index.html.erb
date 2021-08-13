@@ -1,0 +1,41 @@
+<div class="columns">
+  <div class="column is-6">
+  <%=  search_form_for @q , url: administrative_stores_path, method: :get do |f|%>
+    <div class="control">
+      <%= f.search_field :title_cont, class: 'input is-rounded', placeholder: 'Pesquisar por título' %>
+    </div>
+  </div> 
+  <div class="column is-2">
+    <%= button_tag class: "button is-primary is-rounded" do %>
+      <i class="fa fa-search"></i>
+    <% end %>
+  <% end %>
+  </div>
+</div>
+<div class="columns is-multiline is-centered">
+  <div class="column is-10 has-text-white-ter">
+    <% if @stores.blank? %>
+      <p>Ainda não temos loja.</p>
+    <% else %>
+    <div style="overflow-x:auto;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Loja</th>
+            <th>Logar</th>
+          </tr>
+        </thead> 
+        <tbody>
+          <% @stores.each do |store| %>
+            <tr>
+              <td><%= store.title %></td>
+              <td><%= link_to 'Logar', administrative_login_store_path(store),method: :patch, class:'button is-primary is-outlined is-uppercase' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= pagy_bulma_nav(@pagy).html_safe %>
+    <% end %>
+  </div>
+</div>

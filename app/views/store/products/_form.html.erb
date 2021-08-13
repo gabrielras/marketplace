@@ -1,0 +1,149 @@
+<div class="columns">
+  <div class="column is-10 is-offset-1 is-centered">
+
+    <%= form_for [:store, product ]  do |f| %>
+      <% if @product.errors.any? %>
+        <div id="error_explanation">
+          <ul>
+          <% @product.errors.full_messages.each do |message| %>
+            <li class="is-danger" style="color:red"><%= message %></li>
+          <% end %>
+          </ul>
+        </div><br>
+      <% end %>
+
+        <div class="columns">
+
+          <div class="field column is-9">
+            <div class="control">
+              <label>Título</label>
+              <%= f.text_field :title, :required => true, class: 'input' %>
+            </div>
+          </div>
+          <div class="field column">
+            <div class="control">
+              <label>Preço</label>
+              <%= f.number_field :price, :required => true, type:"number", step: 0.01, class: 'input' %>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="columns">
+
+          <div class="field column is-3">
+            <div class="control">
+              <label>Categoria (obrigatória)</label>
+              <div class="control has-icons-left">
+                <span class="select">
+                  <%=  f.collection_select(:subcategory_id, Subcategory.all.collect { |s| [ s.id, "#{s.category.title}: #{s.title}" ] }, :first, :second, { :prompt => 'Selecione uma Categoria', :selected => @product.subcategory_id }, { class: 'form-control' }) %>
+                </span>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-tag"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field column is-3">
+            <div class="control">
+              <label>Categoria Personalizada (opcional)</label>
+              <div class="control has-icons-left">
+                <span class="select">
+                  <%=  f.collection_select(:store_category_id, StoreCategory.all, :id, :title, { :prompt => 'Categoria Personalizada', :selected => @product.store_category_id }, { class: 'form-control' }) %>
+                </span>
+                <span class="icon is-small is-left">
+                  <i class="fa fa-tag"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="field column is-3">
+            <div class="control">
+             <label>Visibilidade</label><br>
+              <div class="select">
+                <%= f.select :visibility,  [[ 'Visível', 'true' ], [ 'Invisível', 'false' ]] %>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <label>Descrição dos Produtos</label>
+            <%= f.text_area :description, :required => true, class: 'textarea' %>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-3"><br>
+            <div class="file is-fullwidth is-link has-name">
+              <label class="file-label">
+                <%= f.file_field :images, multiple: true, class: "file-input", data: { allowed_file_extensions: 'png jpeg jpg jfif' } %>
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fa fa-upload"></i>
+                  </span>
+                  <span class="file-label">
+                    Imagens Secundárias (opcional)
+                  </span>
+                </span>
+                <span class="file-name">
+                  <%= "arquivos salvos" if @product.images.present? %>
+                </span>
+              </label>
+            </div>
+            <p class="help">Aceitamos apenas arquivos em: *jpj *pnj *jpeg *jfif. As Imagens devem ser quadradas e possuir tamanho máximo de 4mb.</p>
+          </div>
+          <div class="column is-3"><br>
+            <div class="file is-fullwidth is-link has-name">
+              <label class="file-label">
+                <%= f.file_field :thumbnail, class: "file-input", data: { allowed_file_extensions: 'png jpeg jpg jfif' } %>
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fa fa-upload"></i>
+                  </span>
+                  <span class="file-label">
+                    Imagem Principal (obrigatória)
+                  </span>
+                </span>
+                <span class="file-name">
+                  <%= "arquivo salvo" if @product.thumbnail.present? %>
+                </span>
+              </label>
+            </div>
+            <p class="help">Aceitamos apenas arquivos em: *jpj *pnj *jpeg *jfif. A Imagem devem ser quadrada e possuir tamanho máximo de 4mb.</p>
+          </div>
+        </div>
+        
+        <h2 class="subtitle is-5">Tipo do Produto (opcional)</h2>
+        <p class="help">Caso você possua um produto com diferentes tamanhos ou cores.</p>
+        <hr />
+        <div class="columns">
+          <table class='table'>
+            <thead>
+            <tr>
+            <th></th>
+            <th>Tamanho</th>
+            <th>Cor</th>
+            <th>Visivel</th>
+            </tr>
+            </thead>
+            <tbody class='fields'>
+              <%= f.fields_for :type_products do |builder| %>
+                <%= render 'type_product', f: builder %>
+              <% end %>
+            </tbody>
+          </table>
+          <%= link_to_add_row('Adicionar', f, :type_products, class: 'button add_fields is-success is-light', data: { turbolinks: false }) %><br>
+        </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <%=  f.submit "Salvar", class: 'button is-primary is-outlined is-fullwidth is-uppercase' %>
+          </div>
+        </div>
+      <% end %>
+  </div>
+</div>

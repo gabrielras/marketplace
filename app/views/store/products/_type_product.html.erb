@@ -1,0 +1,14 @@
+<tr>
+  <td>
+    <%= f.hidden_field :_destroy %>
+    <%= link_to 'Deletar', '#', class: 'remove_record' %>
+  </td>
+  <td><%= f.text_field :size, class: 'input' %></td>
+  <td><%= f.text_field :color, class: 'input' %></td>
+  <td>
+    <div class="select">
+      <%= f.select :visibility,  [[ 'Visível', 'true' ], [ 'Invisível', 'false' ]] %>
+    </div>
+  </td>
+</tr>
+ 

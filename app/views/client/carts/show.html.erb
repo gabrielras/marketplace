@@ -1,0 +1,23 @@
+<div class="column is-10 is-offset-2">
+  <div class="columns">
+    <div class="column is-3">
+      <h1><strong> <p class="subtitle"><span class="f4 has-text-grey">Total: </span><%= number_to_currency(@cart.current_total_price) %></p></strong><h1><br>
+      <% if @cart.address_client.complete? && @cart.order_products.present? %>
+        <%= link_to 'Finalizar Compra', new_client_order_path, class: 'button is-danger is-uppercase is-outlined' %>
+      <% else %>
+        <%= link_to 'Finalizar Compra', edit_client_address_client_path(@address_client),  data: { turbolinks: false }, class: 'button is-danger is-uppercase is-outlined' %>
+      <% end %><br><br>
+      <% if  @cart.find_store.present? %>  
+        <%= link_to 'Voltar as Compras', home_path(@cart.find_store.id), class: 'button is-info is-outlined is-uppercase' %>
+      <% end %>
+      
+    </div>
+    <div class="column is-7">
+      <h4 class="subtitle">Seu Carrinho</h4>
+      <% if @cart.order_products.blank? %>
+        <p>Está Vazio</p>
+      <% end %>
+      <%= render(@cart.order_products) %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="column is-10 is-centered is-offset-2">
+ 
+  <%= form_for [:store, @store_category ]  do |f| %>
+    <% if @store_category.errors.any? %>
+      <div id="error_explanation">
+        <ul>
+          <% @store_category.errors.full_messages.each do |message| %>
+            <li class="is-danger" style="color:red"><%= message %></li>
+          <% end %>
+        </ul>
+      </div><br>
+    <% end %>  
+
+    <h2 class="subtitle is-5">Editar Categoria</h2>
+    <div class="columns"> 
+      <div class="column is-3">
+        <div class="control">
+          <label>Título</label>
+          <%= f.text_field :title, :required => true, class: 'input' %>
+        </div>
+      </div>
+      <div class="column is-3"><br>
+        <div class="control">
+          <%=  f.submit "Salvar", class: 'button is-danger is-outlined is-fullwidth is-uppercase' %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,43 @@
+<div class="columns">
+  <div class="column is-6">
+  <%=  search_form_for @q , url: administrative_clients_path, method: :get do |f|%>
+    <div class="control">
+      <%= f.search_field :name_cont, class: 'input is-rounded', placeholder: 'Pesquisar por título' %>
+    </div>
+  </div> 
+  <div class="column is-2">
+    <%= button_tag class: "button is-primary is-rounded" do %>
+      <i class="fa fa-search"></i>
+    <% end %>
+  <% end %>
+  </div>
+</div>
+<div class="columns is-multiline is-centered">
+  <div class="column is-10 has-text-white-ter">
+    <% if @clients.blank? %>
+      <p>Ainda sem clientes.</p>
+    <% else %>
+    <div style="overflow-x:auto;">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Logar</th>
+          </tr>
+        </thead> 
+        <tbody>
+          <% @clients.each do |client| %>
+            <tr>
+              <td><%= client.name %></td>
+              <td><%= client.email %></td>
+              <td><%= link_to 'Logar', administrative_login_client_path(client),method: :patch, class:'button is-primary is-outlined is-uppercase' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <%= pagy_bulma_nav(@pagy).html_safe %>
+    <% end %>
+  </div>
+</div>

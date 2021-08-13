@@ -1,0 +1,36 @@
+<div class="columns">
+  <div class="column is-12 is-centered">
+
+    <%= form_for [:client, @order_product, @review ]  do |f| %>
+      <% if @review.errors.any? %>
+        <div id="error_explanation">
+          <ul>
+          <% @review.errors.full_messages.each do |message| %>
+            <li class="is-danger"><%= message %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="field">
+        <div class="control">
+          <label>Descrição:</label>
+          <%= f.text_area :text, :required => true, class: 'textarea is-primary' %>
+        </div>
+      </div>
+
+      <div class="field"> 
+        <p>Estrelas:</p>
+        <div class="select is-primary">
+          <%= f.select :value, (1..5), :required => true %>
+        </div>
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <%=  f.submit "Salvar", class: 'button is-primary is-outlined is-fullwidth is-uppercase' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

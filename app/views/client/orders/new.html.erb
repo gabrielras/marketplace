@@ -1,0 +1,122 @@
+<div class="column has-text-white-ter">
+  <h1 class="subtitle has-text-centered">
+    Dados da Compra
+  </h1>
+</div>
+<br>
+<div class="columns is-multiline is-centered">
+
+  <div class="column">
+    <div class="box bg-white">
+      <div class="field">
+        <% @cart.order_products.each do |order_product| %>
+          Produto: <%= order_product.product.title %><br>
+          Valor: <%= order_product.current_unit_price %> R$<br>
+          Quantidade: <%= order_product.quantity %><hr>
+        <% end %>
+      </div>
+      <div class="field">
+        Seu endereço: 
+        <%= @cart.address_client.street %>,
+        <%= @cart.address_client.neighborhood %>,
+        <%= @cart.address_client.number_residence %> n°
+      </div>
+      <div class="field">
+        Informações da entrega:<br>
+        <%= @cart.find_store.shipping.delivery_policy.gsub(/\n/, '<br/>' ).html_safe %>
+      </div>
+    </div>
+  </div>
+  
+  <div class="column box bg-white"> 
+    <%= form_for @order, url: client_orders_path, method: :post do |f| %>
+    <label>Nome e Sobrenome:<label>
+    <%= f.text_field :client_name, :required => true, class: 'input' %><br><br>
+    <label>Formas de Pagamento:<label><br><br>
+    <div class="field">
+      <div class="control">
+        <% if @cart.find_store.profile.credit_or_debit_card_payment_machine %>
+          <label class="radio">
+            <%= f.radio_button :type_of_payment, 'credit_or_debit_card_payment_machine' %>
+            Cartão de Crédito
+          </label><br>
+        <% end %>
+
+        <% if @cart.find_store.profile.cash_payment %>
+          <label class="radio">
+            <%= f.radio_button :type_of_payment, 'cash_payment' %>
+            Dinheiro
+          </label><br>
+        <% end %>
+
+        <% if @cart.find_store.profile.transfer_payment %>
+          <label class="radio">
+            <%= f.radio_button :type_of_payment, 'transfer_payment' %>
+            Transferência Bancária
+          </label><br>
+        <% end %>
+
+        <% if @cart.find_store.profile.billet_payment %>
+          <label class="radio">
+            <%= f.radio_button :type_of_payment, 'billet_payment' %>
+            Boleto Bancário
+          </label>
+        <% end %>
+      </div>
+    </div>
+
+    <label>Formas de Envio:<label><br><br>
+    <div class="field">
+      <div class="control">
+        <% if @cart.find_store.shipping.daily_delivery %>
+          <label class="radio">
+            <%= f.radio_button :type_of_shipping, 'daily_delivery' %>
+            Receba Hoje
+          </label><br>
+        <% end %>
+
+        <% if @cart.find_store.shipping.weekly_delivery %>
+          <label class="radio">
+            <%= f.radio_button :type_of_shipping, 'weekly_delivery' %>
+            Entrega em dia específico da semana
+          </label><br>
+        <% end %>
+
+        <% if @cart.find_store.shipping.pick_up_at_the_store %>
+          <label class="radio">
+            <%= f.radio_button :type_of_shipping, 'pick_up_at_the_store' %>
+            Retirar na Loja
+          </label><br>
+        <% end %>
+
+        <% if @cart.find_store.shipping.reserve_delivery %>
+          <label class="radio">
+            <%= f.radio_button :type_of_shipping, 'reserve_delivery' %>
+            Encomendar
+          </label>
+        <% end %>
+      </div>
+    </div>
+    
+    <label>Informações Adicionais:<label><br><br>
+    <div class="field"> 
+      <div class="control">
+        <%= f.text_area :comment, class: "textarea is-primary"  %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="field-body">
+        <p> Loja: <%= @cart.find_store.title %></p>
+      </div>
+      <div class="field-body">
+        <p> Valor total: <%= number_to_currency(@cart.current_total_price) %></p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <%= f.submit "Concluir Compra", class: "button is-primary is-rounded is-outlined is-fullwidth is-uppercase" %>
+    </div>
+  <% end %>
+  </div>
+</div>

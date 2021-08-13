@@ -1,0 +1,138 @@
+<div class="column is-10 is-centered is-offset-2">
+ 
+  <%= form_for [:store, profile ] do |f| %>
+    <% if @profile.errors.any? %>
+      <div id="error_explanation">
+        <ul>
+        <% @profile.errors.full_messages.each do |message| %>
+          <li class="is-danger" style="color:red"><%= message %></li>
+        <% end %>
+        </ul>
+      </div><br>
+    <% end %>  
+    <h2 class="subtitle is-5">Pagamento</h2>
+    <p>Situação: <%= translate_store_payment(@payment.status) %></p>
+    <p>Data do Pagamento: <%= @payment.payday.strftime("%d/%m/%Y") %></p>
+    <p>Informações: será enviado um boleto por e-mail no dia do pagamento.</p><br>
+    <h2 class="subtitle is-5">Localização</h2>
+    <div class="columns"> 
+      <div class="column is-3">
+        <div class="control">
+          <label>CEP</label>
+          <%= f.text_field :cep_number, :required => true, id: 'cep',  class: 'input' %>
+        </div>
+      </div>
+      <div class="column is-3">
+        <div class="control">
+          <label>Estado</label>
+          <%= f.text_field :state, :required => true, id: "state", class: 'input' %>
+        </div>
+      </div>
+      <div class="column is-3">
+        <div class="control">
+          <label>Cidade</label>
+          <%= f.text_field :city, :required => true, id: "city", class: 'input' %>
+        </div>
+      </div>
+    </div>
+    <div class="columns"> 
+      <div class="column is-3">
+        <div class="control">
+          <label>Bairro</label>
+          <%= f.text_field :neighborhood, :required => true, id: "neighborhood", class: 'input' %>
+        </div>
+      </div>
+      <div class="column is-3">
+        <div class="control">
+          <label>Rua</label>
+          <%= f.text_field :street, :required => true, id: "street", class: 'input' %>
+        </div>
+      </div>
+      <div class="column is-3">
+        <div class="control">
+          <label>Número</label>
+          <%= f.text_field :number_residence,:required => true, class: 'input' %>
+        </div>
+      </div>
+    </div>
+    <div class="columns">
+      <div class="column is-4">
+        <div class="control">
+          <label>Complemento</label>
+          <%= f.text_field :complement, class: 'input' %>
+        </div>
+      </div>
+    </div>
+    <h2 class="subtitle is-5">Dados da Loja</h2>
+    <div class="columns"> 
+      <div class="column is-3">
+        <div class="control">
+          <label>WhatsApp</label>
+          <%= f.text_field :phone_number_whatsapp,:required => true, class: 'input', placeholder: '(99) 99999-9999' %>
+          <p class="help">Ex.: (99) 99999-9999</p>
+        </div>
+      </div>
+      <div class="column is-3"><br>
+        <div class="file is-fullwidth is-link has-name">
+          <label class="file-label">
+            <%= f.file_field :thumbnail, class: "file-input", data: { allowed_file_extensions: 'png jpeg jpg jfif' } %>
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fa fa-upload"></i>
+              </span>
+              <span class="file-label">
+                Logo
+              </span>
+            </span>
+            <span class="file-name">
+              <%= "arquivo salvo" if @profile.thumbnail.present? %>
+            </span>
+          </label>
+        </div>
+        <p class="help">Aceitamos apenas arquivos em: *jpj *pnj *jpeg *jfif. A imagem deve possuir tamanho máximo de 4mb.</p>
+      </div>
+    </div>
+    <div class="columns"> 
+      <div class="column is-3">
+        <div class="control">
+          <label>Link para Facebook</label>
+          <%= f.text_field :link_to_facebook, class: 'input' %>
+          <p class="help">Ex.: https://www.facebook.com/reccebi</p>
+        </div>
+      </div>
+      <div class="column is-3">
+        <div class="control">
+          <label>Link para Instagram</label>
+          <%= f.text_field :link_to_instagram, class: 'input' %>
+          <p class="help">Ex.: https://www.instagram.com/reccebi</p>
+        </div>
+      </div>
+    </div>
+    <h2 class="subtitle is-5">Dados do Pagamento</h2>
+    <div class="column">
+      <div class="field"> 
+        <label class="radio">
+          <%= f.check_box :credit_or_debit_card_payment_machine %>
+          Maquininha de Cartão de Crédito ou Débito
+        </label>
+        <label class="radio">
+          <%= f.check_box :cash_payment %>
+          Dinheiro
+        </label>
+        <label class="radio">
+          <%= f.check_box :billet_payment %>
+          Boleto
+        </label>
+        <label class="radio">
+          <%= f.check_box :transfer_payment %>
+          Transferência Bancária
+        </label>
+      </div>
+    </div>
+    <div class="column is-4">
+      <div class="control">
+        <%=  f.submit "Salvar", class: 'button is-danger is-outlined is-fullwidth is-uppercase' %>
+      </div>
+    </div>
+  <% end %>
+</div>

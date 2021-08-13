@@ -1,0 +1,38 @@
+<div class="columns">
+  <div class="column is-6">
+  <%= search_form_for @q , url: store_discounts_path, method: :get do |f|%>
+    <div class="control">
+      <%= f.search_field :title_cont, class:'input is-rounded', placeholder: 'Pesquisar título' %>
+    </div>
+  </div> 
+  <div class="column is-2">
+    <button class="button is-info is-rounded" type="submit"><i class="fa fa-search"></i></button>
+  <% end %>
+  </div>
+  <div class="column is-3">
+    <%= link_to "Criar Desconto", new_store_discount_path, class: 'button is-info is-outlined is-fullwidth is-uppercase' %>
+  </div>
+</div>
+<div class="columns is-multiline is-centered">
+  <div class="column is-10 is-offset-2">
+    <% if @discounts.blank? %>
+      <p>Cadastre um Desconto :)</p>
+    <% else %>
+      <% @discounts.each do |discount| %>
+        <div class="columns" style="padding: 0px;margin-bottom: 0px;">   
+          <div class="column is-5 is-offset-2">
+            <p class="f4"><%= discount.title %></p>
+            <p>Situação: <%= translate_discount_status(discount.status) %></p>
+            <p>Início: <%= discount.start_time.strftime("%d/%m/%Y, %H:%M") %></p>
+            <p>Encerramento: <%= discount.end_time.strftime("%d/%m/%Y, %H:%M") %></p>
+            <%= link_to "Mostrar", store_discount_path(discount), class: 'button is-info is-outlined is-fullwidth is-uppercase' %>
+          </div>
+          <hr class="hr-color" style="padding: 0px; margin-top: 0px;" />
+        </div>
+      <% end %>
+      <div class="column is-5 is-offset-2">
+        <%= pagy_bulma_nav(@pagy).html_safe %>
+      </div>
+    <% end %>
+  </div>
+</div>

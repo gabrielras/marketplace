@@ -1,0 +1,32 @@
+<div class="columns is-multiline is-centered">
+  <div class="column is-7 has-text-white-ter">
+    <h2 class="subtitle has-text-centered">
+      Administrador
+    </h2>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+   
+    <div class="field">
+      <%= f.label :email %><br />
+      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :password, 'Senha' %><br />
+      <%= f.password_field :password, autocomplete: "current-password", class: "input" %>
+    </div>
+
+    <% if devise_mapping.rememberable? %>
+      <div class="field">
+        <%= f.check_box :remember_me %>
+        <%= f.label :remember_me, 'relembrar senha' %>
+      </div>
+    <% end %>
+
+    <div class="actions">
+      <%= f.submit "Acessar", class: "button is-rounded is-primary is-outlined is-fullwidth is-uppercase" %>
+    </div>
+
+  <% end %>
+  </div>
+</div>
+

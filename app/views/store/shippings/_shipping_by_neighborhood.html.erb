@@ -1,0 +1,9 @@
+<tr>
+  <td>
+    <%= f.hidden_field :_destroy %>
+    <%= link_to 'Deletar', '#', class: 'remove_record' %>
+  </td>
+  <td><%= f.text_field :neighborhood, :required => true, class: 'input is-primary' %></td>
+  <td><%= f.number_field :price, :required => true, type:"number", step: 0.01, class: 'input is-primary' %></td>
+</tr>
+ 

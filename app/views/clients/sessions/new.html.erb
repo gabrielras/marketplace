@@ -1,0 +1,36 @@
+<div class="columns is-multiline is-centered">
+  <div class="column is-5">
+    <%= image_tag "2362425.jpg" %><br>
+  </div>
+  <div class="column is-6">
+    <h2 class="subtitle has-text-centered">
+      Entrar como Cliente  
+    </h2>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="field">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "input" %>
+      </div>
+ 
+      <div class="field">
+        <%= f.label :password, 'Senha' %><br />
+        <%= f.password_field :password, autocomplete: "current-password", class: "input" %>
+      </div>
+ 
+      <% if devise_mapping.rememberable? %>
+        <div class="field">
+          <%= f.check_box :remember_me %>
+          <%= f.label :remember_me, 'relembrar senha' %>
+        </div>
+      <% end %>
+  
+      <div class="actions">
+        <%= f.submit "Acessar", class: "button is-rounded is-primary is-outlined is-fullwidth is-uppercase" %>
+      </div>
+      <br>
+      <div class="has-text-centered">
+        <%= render 'clients/shared/links' %>
+      </div>
+    <% end %>
+  </div>
+</div>

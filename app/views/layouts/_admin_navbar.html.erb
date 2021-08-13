@@ -1,0 +1,35 @@
+<nav class="navbar color-theme" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <%= link_to root_path, class:"navbar-item" do %>
+      <%= image_tag 'logo.png' %>
+    <% end  %>
+    <div class="navbar-burger burger" data-target="navbar">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+    <div id="navbar" class="navbar-menu">
+      <div class="navbar-end">
+        <div class="navbar-item">
+          <% if admin_signed_in? %>
+            <%= link_to 'Clientes', administrative_clients_path, class: 'navbar-item nav-item-color' %>
+            <%= link_to 'Loja', administrative_stores_path, data: { turbolinks: false }, class: 'navbar-item nav-item-color' %>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+              <%= link_to 'Mais', edit_admin_registration_path, class: 'navbar-link nav-item-color' %>
+              <div class="navbar-dropdown is-right">
+                  <%= link_to current_admin.email, edit_admin_registration_path, class: 'navbar-item' %>
+                  <%= link_to 'Sair', destroy_admin_session_path, method: :delete, class: 'navbar-item' %>
+              </div>
+            </div>
+          <% else %>
+
+          <%= link_to 'Acessar', new_admin_session_path, class: 'navbar-item nav-item-color' %>
+          <%= link_to 'Cadastre sua Loja', new_admin_registration_path, class: 'navbar-item nav-item-color' %>
+
+          <% end %>
+        </div>
+      </div>
+    </div>
+</nav>
