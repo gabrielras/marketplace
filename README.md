@@ -1,25 +1,16 @@
-# README
+Este é um mvp de uma marketplace/catálogo para lojas.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Primeiro, é necessário criar um arquivo .env na raiz da aplicação. Adicione as senguintes chaves privadas:
 
-Things you may want to cover:
+AWS_FOG_DIRECTORY
 
-* Ruby version
+AWS_KEY_ID
 
-* System dependencies
+AWS_SECRET_KEY
 
-* Configuration
+REDIS_URL
 
-* Database creation
+Após isso:
 
-* Database initialization
+rails db:create db:migrate db:seed
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-# marketplace
